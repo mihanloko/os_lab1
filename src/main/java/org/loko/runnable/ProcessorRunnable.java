@@ -2,7 +2,7 @@ package org.loko.runnable;
 
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.loko.TaskQueue;
+import org.loko.task.TaskQueue;
 import org.loko.task.Operation;
 import org.loko.task.OperationType;
 import org.loko.task.Task;
@@ -17,6 +17,9 @@ public class ProcessorRunnable implements Runnable {
     public void run() {
         while (!Thread.interrupted()) {
             Task currentTask = processorTaskQueue.pollTask();
+            if (currentTask == null) {
+                continue;
+            }
             while (true) {
                 Operation currentOperation = currentTask.getCurrentOperation();
                 if (currentOperation == null) {

@@ -1,4 +1,4 @@
-package org.loko;
+package org.loko.task;
 
 import org.loko.task.Task;
 
@@ -10,6 +10,10 @@ public class TaskQueue {
 
     public TaskQueue() {
         tasks = new LinkedList<>();
+    }
+
+    public TaskQueue(Deque<Task> tasks) {
+        this.tasks = tasks;
     }
 
     public synchronized Task pollTask() {

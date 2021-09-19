@@ -1,4 +1,4 @@
-package org.loko;
+package org.loko.utils;
 
 import org.loko.task.Operation;
 import org.loko.task.OperationType;

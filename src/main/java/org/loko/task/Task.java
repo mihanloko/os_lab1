@@ -1,5 +1,7 @@
 package org.loko.task;
 
+import org.loko.utils.Logger;
+
 import java.util.List;
 
 public class Task {
@@ -21,7 +23,7 @@ public class Task {
     public void finishOperation() {
         currentOperation++;
         if (currentOperation == operations.size()) {
-            //todo log
+            Logger.log(System.currentTimeMillis());
         }
     }
 }
