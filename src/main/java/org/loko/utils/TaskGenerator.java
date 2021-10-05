@@ -22,13 +22,14 @@ public class TaskGenerator {
 
         for (int i = 0; i < amount; i++) {
             List<Operation> operations = new LinkedList<>();
-            int delta = random.nextInt(maxSteps - minSteps);
+            int delta = random.nextInt(maxSteps - minSteps + 1);
             for (int j = 0; j < minSteps + delta; j++) {
                 if (j % 2 == 0) {
-                    int duration = minCalculationDuration + random.nextInt(maxCalculationDuration - minCalculationDuration);
+                    int duration = minCalculationDuration +
+                                   random.nextInt(maxCalculationDuration - minCalculationDuration + 1);
                     operations.add(new Operation(OperationType.CALCULATION, duration));
                 } else {
-                    int duration = minIODuration + random.nextInt(maxIODuration - minIODuration);
+                    int duration = minIODuration + random.nextInt(maxIODuration - minIODuration + 1);
                     operations.add(new Operation(OperationType.IO, duration));
                 }
             }

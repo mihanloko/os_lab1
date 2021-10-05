@@ -1,7 +1,5 @@
 package org.loko.task;
 
-import org.loko.task.Task;
-
 import java.util.Deque;
 import java.util.LinkedList;
 
