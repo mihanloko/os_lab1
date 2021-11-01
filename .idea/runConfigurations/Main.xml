@@ -2,12 +2,13 @@
   <configuration default="false" name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
     <envs>
       <env name="amount" value="100" />
-      <env name="minCalcDuration" value="400" />
-      <env name="maxCalcDuration" value="1000" />
-      <env name="minIODuration" value="50" />
-      <env name="maxIODuration" value="100" />
+      <env name="minCalcDuration" value="10" />
+      <env name="maxCalcDuration" value="50" />
+      <env name="minIODuration" value="200" />
+      <env name="maxIODuration" value="400" />
       <env name="minSteps" value="2" />
-      <env name="maxSteps" value="2" />
+      <env name="maxSteps" value="4" />
+      <env name="quantum" value="10" />
     </envs>
     <output_file path="log.txt" />
     <option name="MAIN_CLASS_NAME" value="org.loko.Main" />

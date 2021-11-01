@@ -1,16 +1,16 @@
 package org.loko.runnable;
 
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.loko.task.TaskQueue;
 import org.loko.task.Operation;
 import org.loko.task.OperationType;
 import org.loko.task.Task;
+import org.loko.task.TaskQueue;
 
-@AllArgsConstructor
-public class IORunnable implements Runnable {
-    private final TaskQueue ioTaskQueue;
-    private final TaskQueue processorTaskQueue;
+public class IORunnable extends AbstractRunnable {
+
+    public IORunnable(TaskQueue processorTaskQueue, TaskQueue ioTaskQueue, int quantum) {
+        super(processorTaskQueue, ioTaskQueue, quantum);
+    }
 
     @Override
     @SneakyThrows
@@ -20,19 +20,16 @@ public class IORunnable implements Runnable {
             if (currentTask == null) {
                 continue;
             }
-            while (true) {
-                Operation currentOperation = currentTask.getCurrentOperation();
-                if (currentOperation == null) {
-                    break;
-                }
-                if (currentOperation.getType() == OperationType.CALCULATION) {
-                    processorTaskQueue.addTask(currentTask);
-                    break;
-                }
-                if (currentOperation.getType() == OperationType.IO) {
-                    Thread.sleep(currentOperation.getDuration());
-                    currentTask.finishOperation();
-                }
+            Operation currentOperation = currentTask.getCurrentOperation();
+            if (currentOperation == null) {
+                break;
+            }
+            if (currentOperation.getType() == OperationType.CALCULATION) {
+                processorTaskQueue.addTask(currentTask);
+                break;
+            }
+            if (currentOperation.getType() == OperationType.IO) {
+                processTask(currentOperation, currentTask, ioTaskQueue, processorTaskQueue);
             }
         }
     }

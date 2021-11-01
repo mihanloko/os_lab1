@@ -9,39 +9,37 @@ import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class Logger {
 
-    public static void log(List<Task> tasks, String fileName) {
-        List<Long> duration = new ArrayList<>(tasks.size());
-        List<Long> processing = new ArrayList<>(tasks.size());
-        List<Integer> size = new ArrayList<>(tasks.size());
-        try (FileOutputStream fos = new FileOutputStream(fileName);
-             DataOutputStream outStream = new DataOutputStream(new BufferedOutputStream(fos))) {
+    public static void log(List<Task> allTasks, String fileName) {
+        allTasks.stream().collect(Collectors.groupingBy(Task::getPriority)).forEach((priority, tasks) -> {
+            System.out.println("Priority " + priority);
+            List<Long> duration = new ArrayList<>(tasks.size());
+            List<Long> lifeTime = new ArrayList<>(tasks.size());
+            List<Long> processing = new ArrayList<>(tasks.size());
+            List<Integer> size = new ArrayList<>(tasks.size());
             for (Task task : tasks) {
-                outStream.writeBytes(String.format("%d %d %d\n",
-                        task.getFinishTime() - task.getStartTime(),
-                        calculateSum(task),
-                        task.getOperations().size()));
                 duration.add(task.getFinishTime() - task.getStartTime());
+                lifeTime.add(task.getFinishTime() - task.getCreateTime());
                 processing.add(calculateSum(task));
                 size.add(task.getOperations().size());
             }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
 
-        System.out.printf("duration: max - %d min %d%n", max(duration), min(duration));
-        System.out.printf("processing: max - %d min %d%n", max(processing), min(processing));
-        System.out.printf("size: max - %d min %d%n", max(size), min(size));
-        double sum1 = 0;
-        double sum2 = 0;
-        for (int i = 0; i < duration.size(); i++) {
-            sum1 += processing.get(i);
-            sum2 += duration.get(i);
-        }
-        System.out.printf("average processing/duration: %f%n", sum1 / sum2);
+            System.out.printf("duration: max - %d min %d%n", max(duration), min(duration));
+            System.out.printf("lifetime: max - %d min %d%n", max(lifeTime), min(lifeTime));
+            System.out.printf("processing: max - %d min %d%n", max(processing), min(processing));
+            System.out.printf("size: max - %d min %d%n", max(size), min(size));
+            double sum1 = 0;
+            double sum2 = 0;
+            for (int i = 0; i < duration.size(); i++) {
+                sum1 += processing.get(i);
+                sum2 += duration.get(i);
+            }
+            System.out.printf("average processing/duration: %f%n", sum1 / sum2);
+        });
 
     }
 

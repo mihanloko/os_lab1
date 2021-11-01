@@ -34,7 +34,7 @@ public class TaskGenerator {
                 }
             }
 
-            result.add(new Task(operations));
+            result.add(new Task(operations, random.nextInt(4)));
         }
 
         return result;
